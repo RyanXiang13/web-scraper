@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 
@@ -13,6 +14,10 @@ type Industry struct {
 }
 
 func main() {
+	fmt.Println("Enter the website you wish to scrape")
+	var scrapeURL string
+	fmt.Scanln(&scrapeURL)
+
 	// set collector
 	c := colly.NewCollector()
 
@@ -20,7 +25,7 @@ func main() {
 	c.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"
 
 	// scrape logic
-	c.Visit("https://brightdata.com")
+	c.Visit(scrapeURL)
 
 	var industries []Industry
 	// iterating over the list of industry card
@@ -36,10 +41,10 @@ func main() {
 		// filter out unwanted data
 		if url != "" || image != "" || name != "" {
 			// initialize a new Industry instance
-			industry := Industry {
-				Url: url,
+			industry := Industry{
+				Url:   url,
 				Image: image,
-				Name: name,
+				Name:  name,
 			}
 			// add the industry instance to the list
 			// of scraped industries
